@@ -1,7 +1,8 @@
 # shop_risk_control · 电商风险控制系统
 
 > 项目来源：PRD「2.3 电商风险控制系统」
-> 当前进度：**spec coding 五步已完成** → **模块 00 公共基础（已验收）** → **模块 01 登录与权限鉴权（已验收）** → **模块 12 审计日志（已实现，待验收）**
+> 当前状态：**15 个模块（00 ~ 13）已全部交付，三道门全绿** —— `pytest` 1182 passed / 0 failed · 静态自审全过（OpenAPI 62 条路径）· 真实浏览器 E2E `165/165`。
+> 自测教程见 [`TESTING.md`](TESTING.md)，项目总览与验收指南见 [`SUMMARY.md`](SUMMARY.md)。
 
 ---
 
@@ -19,9 +20,14 @@ cd D:\A_Py_Java\pyFile\shop_risk_control
 # ③ 浏览器打开并登录
 #    http://127.0.0.1:8101/        （接口文档： http://127.0.0.1:8101/docs）
 
-# ④ 质量门
-.\.venv\Scripts\python.exe -m pytest tests -q          # 单元/集成测试
-.\.venv\Scripts\python.exe scripts\self_audit.py       # 可维护性自审（退出码可用于 CI）
+# ④ 质量门（共三道：测试 / 自审 / 真实浏览器 E2E）
+#    推荐一键跑（会自动重启 8101 并带上限流预算；该脚本在**工作区**、不在项目内）：
+pwsh -File "D:\Aruanjian_coding_tools\agent_workspace\dsh\risk\03_校验脚本\run_all_gates.ps1"
+#    或手工分步：
+.\.venv\Scripts\python.exe -m pytest tests -q -p no:cacheprovider   # 期望 1182 passed, 1 skipped
+.\.venv\Scripts\python.exe scripts\self_audit.py                    # 期望 全部审计项通过
+#    第 3 道门 E2E 要求**带限流预算**起服务（否则随机 429，见 TESTING.md「故障 3」）。
+#    完整步骤与四个常见故障的排查顺序：见 TESTING.md。
 ```
 
 ### 演示账号（**仅限演示，请勿用于任何真实环境**）
@@ -114,6 +120,9 @@ shop_risk_control/
 
 ## 4. 当前实现范围
 
+> **15 个模块（00 ~ 13）已全部交付并前后端打通。** 下面这份清单是**按开发批次追加的历史记录**（保留了各批交付当时的措辞，不再逐批回改）；**要了解当前范围、模块职责与验收方式，请直接看 [`SUMMARY.md`](SUMMARY.md)**。
+> 一句话分层：`app/api`（路由与契约）→ `app/schemas`（Pydantic 模型）→ `app/services` / `app/engine`（业务与判定）→ `app/repos`（Mongo 访问）；前端在 `static/js`（零构建 ES module，`views/` 按菜单注册）。
+
 **模块 00 · 公共基础（已验收）**
 - 统一响应包 `{ok, code, message, trace_id, data}`；`X-Trace-Id` 头
 - 全量错误码体系（COM/AUTH 已落地，前缀一模块一前缀）+ 兜底 `COM-5000`
@@ -123,7 +132,7 @@ shop_risk_control/
 
 **模块 01 · 登录与权限鉴权（本次交付）**
 - `POST /api/v1/auth/login` · `GET /api/v1/auth/me` · `POST /api/v1/auth/logout` · `POST /api/v1/auth/password`
-- JWT（HS256，8 小时，`jti` 预留）+ bcrypt 口令 + 登录失败锁定（5 次 / 10 分钟）
+- JWT（HS256，8 小时，`jti` 预留）+ bcrypt 口令 + 登录失败锁定（默认 `10` 次 / `60` 秒，见 §6 `LOGIN_MAX_FAILURES`）
 - 三角色权限矩阵（`security/permissions.py` 唯一真源）→ 菜单与接口双重校验
 - 鉴权中间件**默认拒绝**（白名单之外一律要求令牌）+ 权限依赖 `require_permission()`
 - 越权写操作留痕 `auth.denied`（审计哈希链写入）
@@ -145,8 +154,8 @@ shop_risk_control/
 - 派生量服务端算好（拦截率/均值/P95），分母 0 返回 `null` 而非 0；查询 3s 缓存 + single-flight；Mongo 不可用返回快照 + `stale=true`
 - SSE：心跳 15s、`Last-Event-ID` 补偿（环形缓冲 200）、订阅队列 500 背压丢最旧、订阅上限 50、`retry: 3000`
 
-**未实现**（按模块顺序推进）：规则 CRUD 与条件树、名单移除/批量导入、事件网关、特征计算、
-画像图谱、决策引擎、大盘、案件、仿真、系统设置。
+**以下各项均已在后续批次交付**（原文写作"未实现"是当时的进度快照）：规则 CRUD 与条件树、名单移除/批量导入、事件网关、特征计算、
+画像图谱、决策引擎、大盘、案件、仿真、系统设置 —— 见 [`SUMMARY.md`](SUMMARY.md)。
 
 ---
 

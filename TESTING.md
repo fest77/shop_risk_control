@@ -13,8 +13,8 @@ cd D:\A_Py_Java\pyFile\shop_risk_control
 # 先灌一次演示数据（幂等；⚠️ 若报 DuplicateKeyError，见文末"故障 2"）
 .\.venv\Scripts\python.exe scripts\seed.py
 
-# 一键跑：服务 + 测试 + 自审 + 浏览器 E2E
-pwsh -File "D:\Aruanjian_coding_tools\agent_workspace\dsh\risk\03_校验脚本\run_all_gates.ps1" -Restart
+# 一键跑：自动重启服务 + 测试 + 自审 + 浏览器 E2E
+pwsh -File "D:\Aruanjian_coding_tools\agent_workspace\dsh\risk\03_校验脚本\run_all_gates.ps1"
 ```
 
 **看到这样就算全过**：
@@ -27,8 +27,10 @@ pwsh -File "D:\Aruanjian_coding_tools\agent_workspace\dsh\risk\03_校验脚本\r
   三道门全绿 ✅
 ```
 
-> `-Restart` = 让脚本自己把服务起起来。**不加这个参数**时它只复用已在跑的服务（你需另开一个窗口常驻 uvicorn，见下）。
+> **默认行为就是"自己重启 8101 并自动带上限流预算"**（想写成显式参数也行：`-Restart`，与默认**完全等价**）。
+> 只有想**复用你在另一个窗口常驻的 uvicorn** 时才加 `-NoRestart` —— ⚠️ 且仅限"你没在脚本之外动过数据库"，原因见「故障 4」。
 > 常用变体：`-SkipE2E`（只跑测试+自审，快）。
+> 小提示：在**自己终端**里跑时别把它的输出接给 `| Select-Object`（脚本用 `Start-Process` 起的 uvicorn 会继承输出管道 → 前台表现为"卡住不退出"，其实门禁早就跑完并打印了汇总）。
 
 ---
 
@@ -65,7 +67,8 @@ node check_frontend_e2e.js "$PWD\e2e_shot.png"
 
 ## 三、手动点一遍（最能发现"显示不对"）
 
-浏览器打开 **http://127.0.0.1:8101/**，用下面任一账号登录：
+浏览器打开 http://127.0.0.1:8101/
+用下面任一账号登录：
 
 | 账号 | 口令 | 角色 | 能看到 |
 |---|---|---|---|
@@ -91,15 +94,16 @@ node check_frontend_e2e.js "$PWD\e2e_shot.png"
 
 ---
 
-## 四、三个常见故障（照这个顺序排查）
+## 四、四个常见故障（照这个顺序排查）
 
 **故障 1：脚本报「/health 未就绪（60 次重试后仍失败）」**
-说明 **8101 上没有服务在跑**。两种解法：
+只会是两种情况：① 你加了 `-NoRestart`，但 8101 上其实没有服务在跑；② 服务真的启动失败（脚本会把 `logs\gate_server.log.err` 尾部打印出来）。
 ```powershell
-pwsh -File "...\run_all_gates.ps1" -Restart     # 让它自己起
-# 或：另开窗口按"第二节 第 2 步"常驻 uvicorn，再跑脚本（不加参数）
+pwsh -File "...\run_all_gates.ps1"              # 默认就会自己把服务起起来
+# 或：另开窗口按"第二节 第 2 步"常驻 uvicorn，再跑脚本并加 -NoRestart
 ```
-排查用：`curl http://127.0.0.1:8101/health`。
+排查用：`curl http://127.0.0.1:8101/health`。看日志时区分两类**完全不同**的原因：
+`No module named 'app'` = **工作目录不对**（真故障）；`winerror 10048` = **端口被占用**（已有实例在跑，未必是故障）。
 
 **故障 2：`seed.py` 报 `DuplicateKeyError: sim_cases index: uq_sim_case_name`**
 库里有早期残留的同名仿真用例，而该集合 `name` 唯一。清掉重灌：
@@ -111,6 +115,11 @@ pwsh -File "...\run_all_gates.ps1" -Restart     # 让它自己起
 - **限流**：跑 E2E 的服务必须带 `$env:RATE_LIMIT_MAX_REQUESTS='600'`（默认 60 请求/分钟，165 条断言扛不住）。
 - **别并发**：`pytest` 会**逐用例清空测试库**，两个 pytest 一起跑会互相清库、产出**跨十几个模块的随机假失败**。跑之前确认没有别的测试进程。
 - 判据：**失败集中在某个模块** = 真回归；**跨十几个模块均匀散开** = 测试库被并发清空。
+
+**故障 4：E2E 里 V-05 那批断言成片变红（`GET /events/{id}` 恒 404）**
+根因：事件幂等是**服务进程内的内存缓存**（`app/services/idempotency.py`，决策 D6），而 `scripts/seed.py --reset` 是**绕过服务直接清库**。
+于是"库清了、进程里的幂等键还在" → 同一个 `event_id` 再 POST 会被判成 `duplicate` 直接短路、**永不落库**，详情查询就永远 404。
+**纪律：凡是在脚本之外动过库（`seed.py` / `--reset`），就必须重启一次服务。** 一键脚本默认重启正是为了兜住这一点 —— 所以别习惯性加 `-NoRestart`。
 
 ---
 

@@ -140,10 +140,12 @@ shop_risk_control/
 
 ```powershell
 pwsh -File "D:\Aruanjian_coding_tools\agent_workspace\dsh\risk\03_校验脚本\run_all_gates.ps1"
-# 可选：-SkipE2E（只跑 pytest+自审）  -Restart（先重启 8101，自动带限流预算）
+# 变体：-SkipE2E（只跑 pytest+自审，快）
+#       -NoRestart（复用已在跑的服务；⚠️ 仅限没在脚本外动过库，见下面纪律 4）
+#       -Restart  —— 与默认行为完全等价，只是显式写法
 ```
 
-它会依次：重启/探活 8101 → pytest → self_audit → 浏览器 E2E，并打印汇总表。
+它会依次：**重启**（默认行为；自动带限流预算）→ 探活 `/health` → pytest → self_audit → 浏览器 E2E，并打印汇总表。
 **`/health` 的组件表会标注占位实现**（`Unavailable*`/`Null*`），便于一眼看出"哪些还没接上"。
 
 ### 4.2 手工分步
@@ -177,6 +179,7 @@ node check_frontend_e2e.js "$PWD\e2e_shot.png"
 2. **起服务后必须回读 `/health`**：只凭命令返回码可能"看着成功、其实没起来"。
    - 失败看日志区分：`No module named 'app'` = **工作目录不对**；`winerror 10048` = **端口被占用**（已有实例在跑，未必是故障）。
 3. **E2E 前设 `RATE_LIMIT_MAX_REQUESTS=600`**：套件有 165 条断言，默认 60 请求/分钟（按令牌分桶）会随机 429，并连带污染「无 console.error」那条断言。
+4. **在脚本之外动过库（`seed.py` / `--reset`）后必须重启服务**：事件幂等是**服务进程内的内存缓存**（`app/services/idempotency.py`，D6），直接清库**清不掉它**；于是同一 `event_id` 再 POST 会被判 `duplicate` 而**永不落库**、`GET /events/{id}` 恒 404（实测使 E2E 由 165 掉到 154）。一键脚本**默认重启**正是为兜住这一点，因此别习惯性加 `-NoRestart`。
 
 ### 4.3 演示账号（种子提供）
 
