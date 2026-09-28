@@ -566,11 +566,16 @@ input[type=file] { font-size: 12px; color: var(--muted); }
 .case-table.is-busy { opacity: .5; pointer-events: none; }
 .case-tbl { table-layout: fixed; }
 .case-tbl th, .case-tbl td { padding: 7px 4px; font-size: 12px; }
-.case-tbl th:nth-child(1), .case-tbl td:nth-child(1) { width: 50%; }
-.case-tbl th:nth-child(2), .case-tbl td:nth-child(2) { width: 18%; }
+/* ⚠️ 修正（真实显示缺陷）：案件列表在 300px 窄栏里，"案件号 / 用户"是**标识列**，必须能认出来。
+   根因：通用规则 `td { white-space: nowrap; overflow: hidden; text-overflow: ellipsis }`（本文件 145 行）
+   强制不折行，而 `.case-no` 只写了 `word-break: break-all`、**没覆盖 `white-space`**，于是折行意图被
+   静默推翻、编号被省略号截断（列表里只看得到 `CASE202609250000000...`）。修法：显式允许这两列折行，
+   并把宽度略作让渡（46+22+12+20 = 100%，总和不变）。 */
+.case-tbl th:nth-child(1), .case-tbl td:nth-child(1) { width: 46%; }
+.case-tbl th:nth-child(2), .case-tbl td:nth-child(2) { width: 22%; white-space: normal; }
 .case-tbl th:nth-child(3), .case-tbl td:nth-child(3) { width: 12%; text-align: right; }
 .case-tbl th:nth-child(4), .case-tbl td:nth-child(4) { width: 20%; }
-.case-tbl .case-no { font-size: 11px; letter-spacing: -.2px; word-break: break-all; }
+.case-tbl .case-no { font-size: 11px; letter-spacing: -.2px; word-break: break-all; white-space: normal; }
 .case-tbl .tag { padding: 3px 6px; font-size: 11px; }
 .case-row { cursor: pointer; }
 .case-row:hover { background: var(--soft); }
