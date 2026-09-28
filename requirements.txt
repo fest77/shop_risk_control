@@ -1,0 +1,29 @@
+# ===== Web 框架 =====
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+python-dotenv
+python-multipart
+
+# ===== 数据与模拟事件流 =====
+pandas
+numpy
+faker
+
+# ===== 持久化（与本班同一台虚拟机 192.168.6.170 上的 MongoDB / MinIO）=====
+pymongo
+minio
+SQLAlchemy
+aiosqlite
+
+# ===== 鉴权（风控审核员 / 风控策略师 / 系统管理员 三种角色）=====
+PyJWT
+# 直接用 bcrypt 而非 passlib[bcrypt]：passlib 1.7.4 自 2020 年停止维护，
+# 其 bcrypt 后端自检会传 >72 字节口令，bcrypt 5.0 直接抛 ValueError，
+# 导致 passlib.hash.bcrypt.hash() 完全不可用（已实测复现）。
+bcrypt
+
+# ===== 测试 =====
+pytest
+httpx

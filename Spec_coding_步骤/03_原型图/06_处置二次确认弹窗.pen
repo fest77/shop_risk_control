@@ -1,0 +1,373 @@
+{
+  "version": "2.11",
+  "children": [
+    {
+      "type": "frame",
+      "id": "M8mnI",
+      "name": "处置二次确认弹窗",
+      "x": 0,
+      "y": 0,
+      "width": 1282,
+      "height": 600,
+      "fill": "#FCFCFC",
+      "layout": "none",
+      "clip": true,
+      "children": [
+        {
+          "type": "frame",
+          "id": "9SdNG",
+          "name": "mask",
+          "x": 0,
+          "y": 0,
+          "width": 720,
+          "height": 600,
+          "fill": "#EFEFEF",
+          "layout": "none"
+        },
+        {
+          "type": "frame",
+          "id": "wEYuB",
+          "name": "dlg",
+          "x": 80,
+          "y": 60,
+          "width": 560,
+          "fill": "#FFFFFF",
+          "layout": "vertical",
+          "padding": 24,
+          "gap": 16,
+          "cornerRadius": 10,
+          "stroke": "#D9D9D9",
+          "strokeWidth": 1,
+          "strokeAlignment": "inner",
+          "children": [
+            {
+              "type": "frame",
+              "id": "o9TSt",
+              "name": "dlgHead",
+              "width": "fill_container",
+              "alignItems": "center",
+              "justifyContent": "space_between",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "7qaYj",
+                  "name": "dlgT",
+                  "fill": "#222222",
+                  "content": "处置二次确认",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "rnMRy",
+                  "name": "dlgClose",
+                  "fill": "#666666",
+                  "width": 16,
+                  "height": 16,
+                  "iconFontName": "x",
+                  "iconFontFamily": "lucide"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "rDXwC",
+              "name": "dlgSummary",
+              "width": "fill_container",
+              "fill": "#F7F7F7",
+              "layout": "vertical",
+              "padding": 12,
+              "gap": 8,
+              "cornerRadius": 6,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "5m69D",
+                  "name": "ds1",
+                  "width": "fill_container",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "OL6PC",
+                      "name": "ds1K",
+                      "fill": "#333333",
+                      "content": "案件编号",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal",
+                      "textGrowth": "fixed-width",
+                      "width": 90
+                    },
+                    {
+                      "type": "text",
+                      "id": "EYoq2",
+                      "name": "ds1V",
+                      "fill": "#666666",
+                      "content": "CASE0923001",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "N4rLA",
+                  "name": "ds2",
+                  "width": "fill_container",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "0jeu5",
+                      "name": "ds2K",
+                      "fill": "#333333",
+                      "content": "涉事用户",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal",
+                      "textGrowth": "fixed-width",
+                      "width": 90
+                    },
+                    {
+                      "type": "text",
+                      "id": "UgWGc",
+                      "name": "ds2V",
+                      "fill": "#666666",
+                      "content": "U000128（注册 42 天）",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "mkmYd",
+                  "name": "ds3",
+                  "width": "fill_container",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "YKjie",
+                      "name": "ds3K",
+                      "fill": "#333333",
+                      "content": "风险评分",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal",
+                      "textGrowth": "fixed-width",
+                      "width": 90
+                    },
+                    {
+                      "type": "text",
+                      "id": "aNKG1",
+                      "name": "ds3V",
+                      "fill": "#D93025",
+                      "content": "86 分 · 高风险",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "lb07H",
+                  "name": "ds4",
+                  "width": "fill_container",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "b7zjz",
+                      "name": "ds4K",
+                      "fill": "#333333",
+                      "content": "处理结论",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal",
+                      "textGrowth": "fixed-width",
+                      "width": 90
+                    },
+                    {
+                      "type": "text",
+                      "id": "VV26n",
+                      "name": "ds4V",
+                      "fill": "#666666",
+                      "content": "确认违规",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "JLwVY",
+                  "name": "ds5",
+                  "width": "fill_container",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "OALY4",
+                      "name": "ds5K",
+                      "fill": "#333333",
+                      "content": "联动动作",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal",
+                      "textGrowth": "fixed-width",
+                      "width": 90
+                    },
+                    {
+                      "type": "text",
+                      "id": "wN8I3",
+                      "name": "ds5V",
+                      "fill": "#D93025",
+                      "content": "拦截订单 · 拉黑用户 · 封禁设备",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "wuEK7",
+              "name": "dlgRemark",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 6,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "sBvee",
+                  "name": "dlgRemL",
+                  "fill": "#333333",
+                  "content": "处置原因备注（将写入审计日志）",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal",
+                  "textGrowth": "fixed-width",
+                  "width": 280
+                },
+                {
+                  "type": "frame",
+                  "id": "pobCR",
+                  "name": "dlgRemBox",
+                  "width": "fill_container",
+                  "height": 60,
+                  "fill": "#FAFAFA",
+                  "padding": 10,
+                  "cornerRadius": 4,
+                  "stroke": "#CFCFCF",
+                  "strokeWidth": 1,
+                  "strokeAlignment": "inner",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "AR3tD",
+                      "name": "dlgRemT",
+                      "fill": "#777777",
+                      "content": "同一设备指纹下 12 个新注册账号集中领取高额券，确认羊毛党批量套券。",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal",
+                      "textGrowth": "fixed-width",
+                      "width": 480,
+                      "lineHeight": 1.5
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "U3f30",
+              "name": "dlgWarn",
+              "fill": "#D93025",
+              "content": "⚠ 本操作不可撤销，将同步：① 写 case_actions ② 写 list_entries ③ 调用 BizAdapter ④ 写审计哈希链。",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "normal",
+              "textGrowth": "fixed-width",
+              "width": 500,
+              "lineHeight": 1.5
+            },
+            {
+              "type": "frame",
+              "id": "j6Thu",
+              "name": "dlgBtns",
+              "width": "fill_container",
+              "gap": 12,
+              "justifyContent": "end",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "AbWdl",
+                  "name": "dlgCancel",
+                  "width": 88,
+                  "height": 36,
+                  "fill": "#FFFFFF",
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "cornerRadius": 6,
+                  "stroke": "#D9D9D9",
+                  "strokeWidth": 1,
+                  "strokeAlignment": "inner",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Ghn0S",
+                      "name": "dlgCancelT",
+                      "fill": "#444444",
+                      "content": "取消",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "KfOBu",
+                  "name": "dlgOk",
+                  "width": 110,
+                  "height": 36,
+                  "fill": "#D93025",
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "cornerRadius": 6,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "VfBMN",
+                      "name": "dlgOkT",
+                      "fill": "#FFFFFF",
+                      "content": "确认执行",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

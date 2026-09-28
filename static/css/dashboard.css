@@ -1,0 +1,113 @@
+/* 态势大盘专有样式（模块 02 §6 文件规划）
+ *
+ * 与 app.css 的分工：本文件**只放**大盘特有的排版（卡片行、两行图表、事件流），
+ * 配色一律引用 app.css 的主题变量（BR-02-22：颜色只在一处定义，ECharts 也走同一套）。
+ * 类名统一 `db-` 前缀，避免与名单库/规则页/工作台的既有类名互相污染
+ * （那些页面有硬性 E2E 断言盯着它们的类名与布局）。
+ */
+
+/* ==================== 指标卡片行（Spec §2.2：4 张等宽，间距 16） ==================== */
+.db-cards {
+  display: grid;
+  /* 等宽用 `repeat(4, minmax(0, 1fr))` 而不是 auto-fit：
+     auto-fit 会在窄屏下把第 4 张卡换到第二行，看起来像"少了一张卡" */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.db-cards .db-card { min-width: 0; }
+/* 可下钻的卡片：hover 抬边 + 手型，让"可点"这件事在视觉上成立 */
+.stat-card.db-card.is-drill { cursor: pointer; transition: border-color .15s ease, box-shadow .15s ease; }
+.stat-card.db-card.is-drill:hover { border-color: var(--brand); box-shadow: 0 2px 8px rgba(34, 50, 72, .08); }
+.stat-card.db-card.is-drill:focus-visible { outline: 2px solid var(--brand-soft); border-color: var(--brand); }
+/* 拦截率 > 10%：数值变红（Spec §2.2 的异常提示） */
+.stat-value.is-hot { color: var(--danger); }
+/* 卡片下方的口径提示（Spec §2.2：每张卡都要写清来源） */
+.db-caption { font-size: 11px; color: var(--dim); line-height: 1.5; word-break: break-word; }
+
+/* ==================== 两行图表（Spec §2.3/§2.4：等高 260） ==================== */
+.db-grid2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  align-items: stretch;
+}
+.db-grid2 > .db-holder { min-width: 0; display: flex; }
+.db-grid2 > .db-holder > .card { flex: 1 1 auto; min-width: 0; }
+/* ECharts 画布容器必须有确定高度：容器高度为 0 时 ECharts 首帧算出 0×0 且不会自愈 */
+.db-chart { width: 100%; height: 260px; min-width: 0; }
+.db-empty { min-height: 260px; display: flex; align-items: center; justify-content: center; }
+
+/* ==================== 区块级容错（BR-02-11/12） ==================== */
+.db-error {
+  border: 1px dashed var(--danger); background: var(--danger-soft);
+  border-radius: var(--radius-btn); padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 8px; align-items: flex-start;
+}
+.db-error-title { font-size: 13px; font-weight: 600; color: var(--danger); }
+/* 降级路径提示（BR-02-13）：黄色、不隐藏 */
+.db-stale {
+  padding: 8px 10px; border-radius: var(--radius-sm);
+  background: var(--warn-soft); color: var(--warn); font-size: 12px; line-height: 1.6;
+}
+
+/* ==================== 工具栏（Spec §2.1 dbToolbar） ==================== */
+.db-switch { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; position: relative; }
+.db-switch input { position: absolute; opacity: 0; width: 0; height: 0; }
+.db-switch-track {
+  position: relative; width: 34px; height: 18px; border-radius: 9px;
+  background: var(--border-strong); transition: background .18s ease; flex: none;
+}
+.db-switch-track::after {
+  content: ''; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px;
+  border-radius: 50%; background: #fff; transition: transform .18s ease;
+}
+.db-switch input:checked + .db-switch-track { background: var(--ok); }
+.db-switch input:checked + .db-switch-track::after { transform: translateX(16px); }
+.db-switch-text { font-size: 12px; color: var(--muted); }
+.db-switch input:checked ~ .db-switch-text { color: var(--ok); font-weight: 600; }
+
+/* 状态圆点（自动刷新开关 / SSE 连接状态共用） */
+.db-dot {
+  width: 7px; height: 7px; border-radius: 50%; flex: none;
+  background: var(--dim); display: inline-block;
+}
+.db-dot.ok { background: var(--ok); }
+
+/* ==================== 实时事件流（Spec §2.4） ==================== */
+.db-stream-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.db-stream-state { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+.db-stream-state.is-open { color: var(--ok); font-weight: 600; }
+/* 黄条：连接断开/暂停时必须显眼（Spec §2.5） */
+.db-stream-state.is-warn {
+  padding: 6px 10px; border-radius: var(--radius-sm);
+  background: var(--warn-soft); color: var(--warn); font-weight: 600;
+}
+.db-stream-body {
+  /* 只放最近 50 条：给固定高度并允许滚动，卡片高度才不会随事件量无限增长 */
+  max-height: 236px; overflow: auto; border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.db-stream-body table { table-layout: fixed; }
+.db-stream-body th, .db-stream-body td { padding: 6px 6px; font-size: 12px; }
+.db-stream-body thead th { position: sticky; top: 0; z-index: 1; }
+.db-stream-body tbody tr { height: 34px; }
+/* 新事件 0.3s 高亮淡出（Spec §2.4）；类由 JS 在插入时加、320ms 后摘掉 */
+.db-stream-body tr.db-row-new { animation: dbRowFade .3s ease-out; }
+@keyframes dbRowFade {
+  from { background: var(--brand-soft); }
+  to { background: transparent; }
+}
+/* 决策三态（Spec §2.4：pass 灰 / review 橙 / reject 红） */
+.db-decision { font-size: 12px; }
+.db-decision.pass { color: var(--muted); }
+.db-decision.review { color: var(--warn); font-weight: 600; }
+.db-decision.reject { color: var(--danger); font-weight: 600; }
+
+/* ==================== 窄屏 ==================== */
+/* 1280 视口下 4 张卡 + 两列图表正好铺满；更窄时先让卡片降为两列，图表行再叠成单列 */
+@media (max-width: 1180px) {
+  .db-grid2 { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 900px) {
+  .db-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

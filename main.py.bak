@@ -1,0 +1,37 @@
+# -*- coding: utf-8 -*-
+"""shop_risk_control - 电商风险控制系统（2.3）
+
+最小可运行入口：先确认环境通了，业务代码后续再往上加。
+启动：  .venv\Scripts\python.exe -m uvicorn main:app --reload --port 8101
+"""
+from __future__ import annotations
+
+import os
+from datetime import datetime
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI(title="shop_risk_control", version="0.1.0",
+              description="电商风险控制系统 - 事件接入 / 特征计算 / 规则决策 / 案件流转")
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+
+
+@app.get("/health")
+def health() -> dict:
+    """健康检查：同时回报本机依赖与外部存储配置是否就位。"""
+    return {
+        "app": "shop_risk_control",
+        "status": "ok",
+        "time": datetime.now().isoformat(timespec="seconds"),
+        "storage": {
+            "mongo_url": os.getenv("MONGO_URL", "(未配置)"),
+            "mongo_db": os.getenv("MONGO_DB_NAME", "(未配置)"),
+            "minio_endpoint": os.getenv("MINIO_ENDPOINT", "(未配置)"),
+        },
+    }
+
+
+@app.get("/")
+def index() -> dict:
+    return {"message": "shop_risk_control is running", "docs": "/docs"}

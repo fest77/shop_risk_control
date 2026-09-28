@@ -1,0 +1,315 @@
+{
+  "version": "2.11",
+  "children": [
+    {
+      "type": "frame",
+      "id": "oi6Fa",
+      "name": "尚品智选风控中台·登录页",
+      "x": 0,
+      "y": 0,
+      "width": 800,
+      "height": 600,
+      "fill": "#FCFCFC",
+      "layout": "none",
+      "clip": true,
+      "children": [
+        {
+          "type": "frame",
+          "id": "qL9l5",
+          "name": "loginCard",
+          "width": 420,
+          "fill": "#FFFFFF",
+          "layout": "vertical",
+          "padding": 32,
+          "gap": 18,
+          "cornerRadius": 12,
+          "stroke": "#D9D9D9",
+          "strokeWidth": 1,
+          "strokeAlignment": "inner",
+          "children": [
+            {
+              "type": "text",
+              "id": "VubHF",
+              "name": "loginBrand",
+              "fill": "#223248",
+              "content": "风控中台",
+              "fontFamily": "Funnel Sans",
+              "fontSize": 28,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "xaQSS",
+              "name": "loginSub",
+              "fill": "#666666",
+              "content": "电商风险控制系统 · Risk Control Console",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "CLcDm",
+              "name": "loginHr",
+              "width": "fill_container",
+              "height": 1,
+              "fill": "#D9D9D9"
+            },
+            {
+              "type": "frame",
+              "id": "NHD5A",
+              "name": "fUser",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "73glW",
+                  "name": "fUserL",
+                  "fill": "#333333",
+                  "content": "账号 *",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal",
+                  "textGrowth": "fixed-width",
+                  "width": 80
+                },
+                {
+                  "type": "frame",
+                  "id": "2pQEx",
+                  "name": "fUserI",
+                  "width": "fill_container",
+                  "height": 40,
+                  "fill": "#FAFAFA",
+                  "padding": [
+                    0,
+                    12
+                  ],
+                  "alignItems": "center",
+                  "cornerRadius": 4,
+                  "stroke": "#CFCFCF",
+                  "strokeWidth": 1,
+                  "strokeAlignment": "inner",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "QwQH0",
+                      "name": "fUserIT",
+                      "fill": "#777777",
+                      "content": "请输入账号（如 reviewer01）",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "34Qcw",
+              "name": "fPwd",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "kfL6k",
+                  "name": "fPwdL",
+                  "fill": "#333333",
+                  "content": "密码 *",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal",
+                  "textGrowth": "fixed-width",
+                  "width": 80
+                },
+                {
+                  "type": "frame",
+                  "id": "fwK4o",
+                  "name": "fPwdI",
+                  "width": "fill_container",
+                  "height": 40,
+                  "fill": "#FAFAFA",
+                  "padding": [
+                    0,
+                    12
+                  ],
+                  "alignItems": "center",
+                  "cornerRadius": 4,
+                  "stroke": "#CFCFCF",
+                  "strokeWidth": 1,
+                  "strokeAlignment": "inner",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "jwHko",
+                      "name": "fPwdIT",
+                      "fill": "#777777",
+                      "content": "请输入密码",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Kekhj",
+              "name": "fRole",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "2UpFU",
+                  "name": "fRoleL",
+                  "fill": "#333333",
+                  "content": "登录后角色（系统自动判定）",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal",
+                  "textGrowth": "fixed-width",
+                  "width": 220
+                },
+                {
+                  "type": "frame",
+                  "id": "CvH7u",
+                  "name": "fRoleTags",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "KIxYs",
+                      "name": "roleTag1",
+                      "fill": "#F0F0F0",
+                      "padding": [
+                        4,
+                        10
+                      ],
+                      "alignItems": "center",
+                      "justifyContent": "center",
+                      "cornerRadius": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "4X2Q7",
+                          "name": "roleTag1T",
+                          "fill": "#444444",
+                          "content": "风控审核员",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "qD3zv",
+                      "name": "roleTag2",
+                      "fill": "#F0F0F0",
+                      "padding": [
+                        4,
+                        10
+                      ],
+                      "alignItems": "center",
+                      "justifyContent": "center",
+                      "cornerRadius": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ZDfnr",
+                          "name": "roleTag2T",
+                          "fill": "#444444",
+                          "content": "风控策略师",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "gVyiO",
+                      "name": "roleTag3",
+                      "fill": "#F0F0F0",
+                      "padding": [
+                        4,
+                        10
+                      ],
+                      "alignItems": "center",
+                      "justifyContent": "center",
+                      "cornerRadius": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "e9FSw",
+                          "name": "roleTag3T",
+                          "fill": "#444444",
+                          "content": "系统管理员",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "h095N",
+              "name": "loginErr",
+              "fill": "#D93025",
+              "content": "⚠ 账号或密码错误 / 账号已被停用（错误提示区）",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "pzPVN",
+              "name": "btnLogin",
+              "width": 356,
+              "height": 44,
+              "fill": "#223248",
+              "alignItems": "center",
+              "justifyContent": "center",
+              "cornerRadius": 6,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "oqXUn",
+                  "name": "btnLoginT",
+                  "fill": "#FFFFFF",
+                  "content": "登  录",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "zmewG",
+              "name": "loginFoot",
+              "fill": "#8A8A8A",
+              "content": "凭据使用 bcrypt 加盐存储；登录态为 JWT，失效自动跳回本页。",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            }
+          ],
+          "x": 190,
+          "y": 70
+        }
+      ]
+    }
+  ]
+}

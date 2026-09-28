@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>风控中台</title>
+<!-- 零构建、零 CDN：样式与脚本全部由本站托管（BR-00-19 / BR-00-20） -->
+<link rel="stylesheet" href="/static/css/app.css" />
+<!-- 大盘专有样式（模块 02 §6）。单列一个文件而不是塞进 app.css：
+     模块 02 的样式密度很高，混进公共样式表后"哪条规则属于哪个页面"就再也说不清了 -->
+<link rel="stylesheet" href="/static/css/dashboard.css" />
+</head>
+<!-- 初始按"未登录"呈现：避免刷新瞬间闪出侧栏再被登录页替换（模块 01 §2.1） -->
+<body class="guest">
+<div class="app">
+  <!-- 侧边导航：固定 200px，路由切换时不重建（模块 00 §2.1） -->
+  <aside class="sidebar">
+    <div class="brand">风控中台</div>
+    <nav class="menu" id="menu"></nav>
+    <div class="sidebar-foot">
+      <div class="user-box" id="userBox"></div>
+      <div class="foot-actions">
+        <button class="ghost" id="pwdBtn" type="button">修改密码</button>
+        <button class="ghost" id="logoutBtn" type="button">登出</button>
+      </div>
+      <div class="hint">
+        <span class="health-dot" id="healthDot"></span><span id="healthText">检查中…</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="crumb" id="crumb"></div>
+        <h1 class="page-title" id="pageTitle"></h1>
+      </div>
+      <div class="filters" id="pageActions"></div>
+    </div>
+    <div class="view" id="view"></div>
+  </main>
+</div>
+
+<div class="toast-root" id="toastRoot"></div>
+<div id="modalRoot"></div>
+
+<script type="module" src="/static/js/app.js"></script>
+</body>
+</html>
